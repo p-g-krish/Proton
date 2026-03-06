@@ -27,6 +27,8 @@ Proton is a lightweight and powerful Javascript particle animation library. Use 
 
 Check out examples at [http://drawcall.github.io/Proton/](http://drawcall.github.io/Proton/). The **3D version** of the proton engine is here [here](https://github.com/drawcall/three.proton/). An available **react version** is [here](https://github.com/lindelof/particles-bg).
 
+For guidance on how to use Proton with TypeScript, please refer to [https://github.com/drawcall/Proton/issues/109](https://github.com/drawcall/Proton/issues/109)
+
 ## Features
 
 - **Easy to use** It takes only a dozen lines of code to create a particle animation effect.
@@ -65,7 +67,7 @@ import Proton from "proton-engine";
 #### OR include in html
 
 ```html
-<script type="text/javascript" src="js/proton.min.js"></script>
+<script type="text/javascript" src="js/proton.web.min.js"></script>
 ```
 
 ## Usage
@@ -73,20 +75,32 @@ import Proton from "proton-engine";
 Proton is very simple to use, a dozen lines of code can create a particle animation.
 
 ```javascript
+import Proton, {
+  Emitter,
+  Rate,
+  Span,
+  Radius,
+  Life,
+  Velocity,
+  Color,
+  Alpha,
+  CanvasRenderer,
+} from "proton-engine";
+
 const proton = new Proton();
-const emitter = new Proton.Emitter();
+const emitter = new Emitter();
 
 //set Rate
-emitter.rate = new Proton.Rate(Proton.getSpan(10, 20), 0.1);
+emitter.rate = new Rate(new Span(10, 20), 0.1);
 
 //add Initialize
-emitter.addInitialize(new Proton.Radius(1, 12));
-emitter.addInitialize(new Proton.Life(2, 4));
-emitter.addInitialize(new Proton.Velocity(3, Proton.getSpan(0, 360), "polar"));
+emitter.addInitialize(new Radius(1, 12));
+emitter.addInitialize(new Life(2, 4));
+emitter.addInitialize(new Velocity(3, new Span(0, 360), "polar"));
 
 //add Behaviour
-emitter.addBehaviour(new Proton.Color("ff0000", "random"));
-emitter.addBehaviour(new Proton.Alpha(1, 0));
+emitter.addBehaviour(new Color("ff0000", "random"));
+emitter.addBehaviour(new Alpha(1, 0));
 
 //set emitter position
 emitter.p.x = canvas.width / 2;
@@ -97,7 +111,7 @@ emitter.emit(5);
 proton.addEmitter(emitter);
 
 // add canvas renderer
-const renderer = new Proton.CanvasRenderer(canvas);
+const renderer = new CanvasRenderer(canvas);
 proton.addRenderer(renderer);
 ```
 
@@ -111,7 +125,7 @@ proton.addRenderer(renderer);
 
 - Added `Proton.Cyclone` behavior, you can make vortex effects with Cyclone. Demo please check [here](https://codesandbox.io/s/proton-cyclone-rzweu).
 
-- `proton.fps` In most cases, you don't need to set this property. You can set this property when the game engine has fixed fps or some browsers have a higher refresh rate.
+- `proton.fps` In modern browsers, if the FPS exceeds 60 and you want to maintain a stable 60 FPS, you need to set `proton.fps = 60`. You can set this property when the game engine has fixed fps or some browsers have a higher refresh rate.
 
 - Use Euler integration calculation is more accurate (default false) `Proton.USE_CLOCK = false or true;`.
 
